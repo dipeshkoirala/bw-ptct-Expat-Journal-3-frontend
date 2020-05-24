@@ -1,36 +1,36 @@
 import React, { useState } from "react";
 import axios from "axios";
 import * as yup from "yup";
-import styled from "styled-components";
+// import styled from "styled-components";
 
-{
-  /* <div className="form-wrapper">
-<form onSubmit={submitForm}>
-  <fieldset>
-    <legend>Form goes down here</legend>
-    <label className="dklabel" htmlFor="name">
-      Name:
-      <input
-        className="dktext"
-        
-      />
-    </label>
-    <br></br>
+// {
+//   /* <div className="form-wrapper">
+// <form onSubmit={submitForm}>
+//   <fieldset>
+//     <legend>Form goes down here</legend>
+//     <label className="dklabel" htmlFor="name">
+//       Name:
+//       <input
+//         className="dktext"
 
-    {/* label and password for password 
-    <label className="dklabel" htmlFor="password">
-      Password:
-      <input
-        className="dktext"
-        
-      />
-    </label>
-    {/* Button and Submit *
-    <button type="submit">Submit</button>
-  </fieldset>
-</form>
-</div> */
-}
+//       />
+//     </label>
+//     <br></br>
+
+//     {/* label and password for password
+//     <label className="dklabel" htmlFor="password">
+//       Password:
+//       <input
+//         className="dktext"
+
+//       />
+//     </label>
+//     {/* Button and Submit *
+//     <button type="submit">Submit</button>
+//   </fieldset>
+// </form>
+// </div> */
+// }
 
 // const StyledH3 = styled.label`
 //   background: dodgerblue;
@@ -43,35 +43,44 @@ import styled from "styled-components";
 
 const formSchema = yup.object().shape({
   //take name of each of our form from the <input name="name"
-  name: yup.string().required("Name is required"),
-  myname: "",
+  id: yup.number(),
+  username: yup.string().required("Name is required"),
+
   email: yup.string().email("email must be valid").required("Cant't be empty"),
 
   password: yup
     .string()
     //.password("valid password plz")
     .required("Cant't be empty"),
+  first_name: yup.string().required("cant' be emty"),
+  last_name: yup.string().required("Cant't be empty"),
+  //.password("valid password plz")
 
-  terms: yup.boolean().oneOf([true], "Please agree to terms of use"),
+  //   terms: yup.boolean().oneOf([true], "Please agree to terms of use"),
 }); //expression for yup completes
 
 const Form = () => {
   // state defining and assinging  an object :Destructuring
   const [dataState, setDataState] = useState({
-    name: "",
-    myname: "",
+    id: "",
+    username: "",
+    email: "",
+    first_name: "",
+    last_name: "",
     password: "",
   });
 
   const [errorState, setErrorState] = useState({
-    name: "",
-    myname: "",
+    id: "",
+    username: "",
+    email: "",
+    first_name: "",
+    last_name: "",
     password: "",
   });
 
   const validate = (e) => {
-    let value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    let value = e.target.value;
     yup
       .reach(formSchema, e.target.name)
       .validate(value)
@@ -93,17 +102,48 @@ const Form = () => {
     console.log("input changed");
     e.persist();
     validate(e);
-    let value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    let value = e.target.value;
+    //   e.target.type === "checkbox" ? e.target.checked : e.target.value;
     setDataState({ ...dataState, [e.target.name]: value });
   };
 
   const submitForm = (e) => {
     e.preventDefault();
     console.log("form submitted!!!!");
+    console.log(dataState);
     axios
-      .post("https://github.com/bw-ptct-Expat-Journal-3/backend", dataState)
-      .then((response) => console.log(response))
+
+      /*
+
+    // Send a POST request
+axios({
+  method: 'post',
+  url: '/user/12345',
+  data: {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  }
+});
+*/
+      // https://expat-journal-backend-jensen.herokuapp.com/ that should work
+
+      // Lauren  7:08 PM
+
+      .post(
+        "https://expat-journal-backend-jensen.herokuapp.com/api/auth/register",
+        dataState,
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+
+      //1. Edit
+      // .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
 
@@ -112,14 +152,14 @@ const Form = () => {
       <form onSubmit={submitForm}>
         <fieldset>
           <legend>Form goes down here</legend>
-          <label className="dklabel" htmlFor="name">
+          <label className="dklabel" htmlFor="username">
             Name:
             <input
               className="dktext"
               type="text"
-              name="name"
+              name="username"
               id="name"
-              value={dataState.name} //default value will be the text entered val
+              value={dataState.username} //default value will be the text entered val
               placeholder="Enter Name"
               onChange={inputChange}
             />
@@ -139,6 +179,48 @@ const Form = () => {
               onChange={inputChange}
             />
           </label>
+
+          <label className="dklabel" htmlFor="first_name">
+            First Name:
+            <input
+              className="dktext"
+              type="text"
+              name="first_name"
+              id="fname"
+              value={dataState.first_name} //default value will be the text entered val
+              placeholder="Enter Name"
+              onChange={inputChange}
+            />
+          </label>
+          <br></br>
+
+          <label className="dklabel" htmlFor="last_name">
+            Last Name:
+            <input
+              className="dktext"
+              type="text"
+              name="last_name"
+              id="lname"
+              value={dataState.last_name} //default value will be the text entered val
+              placeholder="Enter Name"
+              onChange={inputChange}
+            />
+          </label>
+          <br></br>
+
+          <label className="dklabel" htmlFor="email">
+            email:
+            <input
+              className="dktext"
+              type="text"
+              name="email"
+              id="email"
+              value={dataState.email} //default value will be the text entered val
+              placeholder="Enter Name"
+              onChange={inputChange}
+            />
+          </label>
+          <br></br>
           {/* Button and Submit */}
           <button type="submit">Submit</button>
         </fieldset>
