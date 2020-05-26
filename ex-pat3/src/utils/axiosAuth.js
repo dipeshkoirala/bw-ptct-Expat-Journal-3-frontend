@@ -5,7 +5,7 @@ export const axiosWithAuth = () => {  // token allows you to go to private route
 	const token = localStorage.getItem('token');
 
 	return axios.create({
-		baseURL: 'http://localhost:5000/api',
+		baseURL: 'https://expat-journal-backend-jensen.herokuapp.com/',
 		headers: {
 			Authorization: token
 		}
