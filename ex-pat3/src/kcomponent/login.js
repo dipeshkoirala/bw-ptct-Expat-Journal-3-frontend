@@ -45,15 +45,14 @@ const formSchema = yup.object().shape({
   //take name of each of our form from the <input name="name"
   id: yup.number(),
   username: yup.string().required("Name is required"),
-
-  email: yup.string().email("email must be valid").required("Cant't be empty"),
-
   password: yup
     .string()
     //.password("valid password plz")
     .required("Cant't be empty"),
+
   first_name: yup.string().required("cant' be emty"),
   last_name: yup.string().required("Cant't be empty"),
+  email: yup.string().email("email must be valid").required("Cant't be empty"),
   //.password("valid password plz")
 
   //   terms: yup.boolean().oneOf([true], "Please agree to terms of use"),
@@ -62,7 +61,7 @@ const formSchema = yup.object().shape({
 const Form = () => {
   // state defining and assinging  an object :Destructuring
   const [dataState, setDataState] = useState({
-    id: "",
+    // id: "",
     username: "",
     email: "",
     first_name: "",
@@ -71,7 +70,7 @@ const Form = () => {
   });
 
   const [errorState, setErrorState] = useState({
-    id: "",
+    // id: "",
     username: "",
     email: "",
     first_name: "",
@@ -130,12 +129,14 @@ axios({
       // Lauren  7:08 PM
 
       .post(
-        "https://expat-journal-backend-jensen.herokuapp.com/api/auth/register",
+        // "https://expat-journal-backend-jensen.herokuapp.com/api/auth/register",
+        "http://localhost:8000/api/auth/register",
         dataState,
         {
           headers: {
             "content-type": "application/json",
           },
+          body: JSON.stringify(dataState),
         }
       )
       .then((response) => {
