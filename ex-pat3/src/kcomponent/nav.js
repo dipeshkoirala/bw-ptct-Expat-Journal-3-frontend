@@ -3,11 +3,11 @@ import React from "react";
 import "../App.css";
 import { Route, Link } from "react-router-dom";
 
-function Navigation() {
+function Navigation(props) {
   return (
     <div>
       <div className="AppContainer">
-        <Link to="/home">Home</Link>
+        <Link to={"/home"}>Home</Link>
 
         <Link to="/about">About</Link>
 
